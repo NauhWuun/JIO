@@ -1,4 +1,4 @@
-package java;
+package org.NauhWuun.jio;
 
 import java.util.*;
 

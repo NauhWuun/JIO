@@ -1,4 +1,4 @@
-package java;
+package org.NauhWuun.jio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,29 +9,29 @@ import java.util.concurrent.Executors;
 
 public class AioServer implements Runnable 
 {
-    public static CircularBuffer<byte[]> RingBuffer;
+    public static CircularBuffer<Object> RingBuffer;
 
-    private static long timeOut;
     private AsynchronousChannelGroup ChannelGroup;
     private AsynchronousServerSocketChannel Server;
 
     public AioServer() throws IOException {
-        RingBuffer = new CircularBuffer<>(1024 * 1024 * 50 * 10);
-        ValidParams.Printof("AIO Server Starting...");
+        RingBuffer = new CircularBuffer<Object>((int) Runtime.getRuntime().freeMemory() / 2);
+        ValidParams.Print("AIO Server Starting...");
     }
 
     public void Start(int port) throws IOException, ClassCastException {
-        ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2 + 2,
-                        Executors.defaultThreadFactory());
-
-        ValidParams.Printof("Thread Counts：" + Runtime.getRuntime().availableProcessors() * 2 + 2);
+        ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(
+                (Runtime.getRuntime().availableProcessors() <= 8 || Runtime.getRuntime().availableProcessors() == 16)
+                        ?  Runtime.getRuntime().availableProcessors() * 2 + 2 /* availableProcessors * 2 + 2 => multiThreads */
+                        :  Runtime.getRuntime().availableProcessors() * 4 + 4
+                        ,  Executors.defaultThreadFactory());
 
         Server = AsynchronousServerSocketChannel.open(ChannelGroup);
-        Server.bind(new InetSocketAddress(port < 0 ? 0 : port));
+        Server.bind(new InetSocketAddress(Math.max(port, 0)));
 
-        ValidParams.Printof("Binding Port：" + port);
+        ValidParams.Print("Binding Port：" + port);
 
-        Server.setOption(StandardSocketOptions.SO_RCVBUF, 0);
+        Server.setOption(StandardSocketOptions.SO_RCVBUF, 8192); /* 8k page */
         Server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
 
         new Thread((Runnable) Server).start();
@@ -51,14 +51,6 @@ public class AioServer implements Runnable
         if (Server.isOpen())
             Server.close();
 
-        ValidParams.Printof("AIO Server Closing：");
-    }
-
-    public static void setTimeout(long TimeOut) {
-        timeOut = ((TimeOut <= 0) || (TimeOut > Integer.MAX_VALUE - 1)) ? 1000 : 5000;
-    }
-
-    public static long getTimeOut() {
-        return timeOut;
+        ValidParams.Print("AIO Server Closing：");
     }
 }

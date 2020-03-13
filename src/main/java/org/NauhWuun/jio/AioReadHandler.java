@@ -1,4 +1,4 @@
-package java;
+package org.NauhWuun.jio;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -6,7 +6,7 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.Callable;
 
-public class AioReadHandler implements CompletionHandler<Integer, ByteBuffer> 
+public class AioReadHandler implements CompletionHandler<Integer, ByteBuffer>
 {
     private AsynchronousSocketChannel sockets;
 
@@ -15,33 +15,26 @@ public class AioReadHandler implements CompletionHandler<Integer, ByteBuffer>
     }
 
     public void cancelled(ByteBuffer attachment) {
-        ValidParams.Printof("AioReadHandler cancelled");
+        ValidParams.Print("AioReadHandler cancelled");
         attachment.rewind();
     }
 
     public void completed(Integer i, ByteBuffer buf) {
         if (i > 0) {
             buf.flip();
-
-            ByteBuffer CallBackBuffer = buf.duplicate();
-            AioServer.RingBuffer.add(CallBackBuffer);
-
-
-            try {
-                ValidParams.Printof("ip addr:" + sockets.getRemoteAddress().toString() + "buffer:" + CallBackBuffer.toString());
-            } catch (IOException e) {}
-            
+            AioServer.RingBuffer.add(buf);
             sockets.read(buf, buf, this);
         } else if (i == -1) {
-            try {
-                buf.rewind();
-                sockets.close();
-            } catch (IOException e) {}
+            buf.rewind();
         }
     }
 
     public void failed(Throwable exc, ByteBuffer buf) {
-        ValidParams.Printof(exc.getMessage());
+        ValidParams.Print(exc.getMessage());
         buf.rewind();
+    }
+
+    public void close() throws IOException {
+        sockets.close();
     }
 }

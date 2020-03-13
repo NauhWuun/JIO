@@ -1,4 +1,4 @@
-package java;
+package org.NauhWuun.jio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,15 +13,14 @@ public class AioClient extends Thread
     private final AsynchronousSocketChannel client;
 
     private ByteBuffer RecvBuffer = ByteBuffer.allocate(8192);
-    private ByteBuffer CallBackBuffer = ByteBuffer.allocateDirect(8192);
 
     public AioClient() throws IOException {
         client = AsynchronousSocketChannel.open();
     }
 
     public boolean Start(final String ip, final int port) throws IOException {
-        ValidParams.IsEmpty(ip, "please check dest ip value", true);
-        ValidParams.IsLessEqual(port, "please check dest port value", true);
+        ValidParams.IsEmpty(ip, "please check dest ip value");
+        ValidParams.IsLessEqual(port, "please check dest port value");
 
         Future<Void> connetional = client.connect(new InetSocketAddress(ip, port));
         if (connetional.isCancelled()) {
@@ -46,14 +45,13 @@ public class AioClient extends Thread
                 if (result > 0) {
                     buffer.flip();
 
-                    CallBackBuffer = buffer.duplicate();
                     client.read(buffer, buffer, this);
                 } else if (result == -1) {
                     try {
-                        ValidParams.Printof("the dest object is closed");
+                        ValidParams.Print("the dest object is closed");
                         client.close();
                     } catch (IOException e) {
-                        ValidParams.Printof(e.getMessage());
+                        ValidParams.Print(e.getMessage());
                     }
                 }
             }
@@ -69,6 +67,6 @@ public class AioClient extends Thread
         if (client.isOpen())
             client.close();
 
-        CallBackBuffer.clear();
+        RecvBuffer.clear();
     }
 }

@@ -1,4 +1,4 @@
-package java;
+package org.NauhWuun.jio;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,7 +19,6 @@ import java.util.Objects;
  * @Cloning<p>
  * @Combination QueueObject<p>
  */
-
 public class SingleTon<T> implements Serializable, Cloneable 
 {
     private static final long serialVersionUID = -540841140899265232L;

@@ -1,6 +1,5 @@
-package java;
+package org.NauhWuun.jio;
 
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class HashTimeWheel 
@@ -22,7 +21,7 @@ public class HashTimeWheel
     }
 
     public void setMaxTimers(int maxTimers) {
-        ValidParams.IsLess(maxTimers, "setMaxTimers(error)", true);
+        ValidParams.IsLess(maxTimers, "setMaxTimers(error)");
         this.maxTimers = maxTimers;
     }
 
@@ -31,13 +30,13 @@ public class HashTimeWheel
     }
 
     public void setInterval(long interval) {
-        ValidParams.IsLess(interval, "setInterval(error)", true);
+        ValidParams.IsLess(interval, "setInterval(error)");
         this.interval = interval;
     }
 
     public void add(long delay, Runnable run) {
-        ValidParams.IsLess(delay, "add(error)", true);
-        ValidParams.IsNull(run, "add(error)", true);
+        ValidParams.IsLess(delay, "add(error)");
+        ValidParams.IsNull(run, "add(error)");
 
         final int curSlot = currentSlot;
         final int ticks = delay > interval ? (int) (delay / interval) : 1;
@@ -73,7 +72,8 @@ public class HashTimeWheel
         timerSlots = null;
     }
 
-    final class Worker implements Runnable {
+    final class Worker implements Runnable
+    {
         @Override
         public void run() {
             while (start) {
@@ -87,7 +87,7 @@ public class HashTimeWheel
                 try {
                     Thread.sleep(interval);
                 } catch (InterruptedException e) {
-                    ValidParams.Printof(e.getMessage());
+                    ValidParams.Print(e.getMessage());
                 }
 
                 currentSlot = currentSlotTemp;
@@ -95,7 +95,8 @@ public class HashTimeWheel
         }
     }
 
-    final class TimerTask {
+    final class TimerTask
+    {
         private int round;
         private Runnable run;
 

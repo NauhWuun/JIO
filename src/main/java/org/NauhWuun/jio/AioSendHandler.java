@@ -1,4 +1,4 @@
-package java;
+package org.NauhWuun.jio;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -16,7 +16,7 @@ public class AioSendHandler implements CompletionHandler<Integer, ByteBuffer>
     }
 
     public void cancelled(ByteBuffer attachment) {
-        ValidParams.Printof("cancelled " + attachment.array());
+        ValidParams.Print("AioSend Cancelled ");
     }
 
     public void completed(Integer i, ByteBuffer buf) {
@@ -25,7 +25,7 @@ public class AioSendHandler implements CompletionHandler<Integer, ByteBuffer>
                 buf.rewind();
                 socket.close();
             } catch (IOException ignored) {
-                ValidParams.Printof(ignored.getMessage());
+                ValidParams.Print(ignored.getMessage());
             }
         }
 
@@ -37,6 +37,7 @@ public class AioSendHandler implements CompletionHandler<Integer, ByteBuffer>
     }
 
     public void sendBuffer(ByteBuffer SendBuffer) {
-        socket.write(ByteBuffer.wrap(SendBuffer.array()), WRITE_TIME_OUT, TimeUnit.MILLISECONDS, SendBuffer, this);
+        socket.write(ByteBuffer.wrap(SendBuffer.array()), WRITE_TIME_OUT, TimeUnit.MILLISECONDS,
+                SendBuffer, this);
     }
 }

@@ -1,7 +1,4 @@
-package java;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.NauhWuun.jio;
 
 import java.util.Arrays;
 
@@ -22,150 +19,97 @@ import java.util.Arrays;
  *     (t (function y (x y)))))
  *  (throws)
  */
-
-public class ValidParams 
+public class ValidParams
 {
-    private static Logger ValidLog = LoggerFactory.getLogger(ValidParams.class);
-
-    public static void IsTrue(boolean expression, String message, boolean _throws) {
-        if (! expression) {
-            if (_throws) {
-                ValidLog.error("expression isTure => False");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+    public static <T> boolean IsBoolean(T expression, String message) {
+        if (! (Boolean) expression) {
+            throw new IllegalArgumentException(message);
         }
+
+        return  (Boolean) expression;
     }
 
-    public static <T> void IsNull(T expression, String message, boolean _throws) {
-        if (expression == null) {
-            if (_throws) {
-                ValidLog.error("expression isNull => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+    public static <T> boolean IsNull(T expression, String message) {
+        if (null == expression) {
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static <T> boolean IsNull(T expression) {
-        ValidLog.info("expression IsNull => ", expression);
-        return (boolean)expression;
-    }
-
-    public static void IsEmpty(boolean expression, String message) {
-        if (! expression) {
-            ValidLog.info("expression IsEmpty => False");
-        } else
-            ValidLog.info(message);
-    }
-
-    public static void IsEmpty(String expression, String message, boolean _throws) {
+    public static boolean IsEmpty(String expression, String message) {
         if (expression.equals("")) {
-            if (_throws) {
-                ValidLog.error("expression IsEmpty => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static boolean IsEmpty(String expression) {
-        ValidLog.info("expression IsEmpty => ", expression.equals(""));
-        return expression.equals("");
+    public static <T> boolean IsNotEqual(T expression_1, T expression_2) {
+        return (expression_1 != expression_2);
     }
 
-    public static <T> void IsEqual(T expression_1, T expression_2, String message, boolean _throws) {
-        if (expression_1 != expression_2) {
-            if (_throws) {
-                ValidLog.error("expression_1 IsEqual expression_2 => False");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+    public static <T extends Comparable<? super T> > boolean IsLess(T expression, String message) {
+        if ((Integer) expression < 0) {
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static <T extends Comparable<? super T> > void IsLess(T expression, String message, boolean _throws) {
-        if ((Integer)expression < 0) {
-            if (_throws) {
-                ValidLog.error("expression IsLess => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
-        }
-    }
-
-    public static <T> void IsLessEqual(T expression, String message, boolean _throws) {
+    public static <T> boolean IsLessEqual(T expression, String message) {
         if ((Integer)expression <= 0) {
-            if (_throws) {
-                ValidLog.error("expression IsLessEqual => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static void IsLess(int expression, String message, boolean _throws) {
+    public static boolean IsLess(int expression, String message) {
         if (expression < 0) {
-            if (_throws) {
-                ValidLog.error("expression IsLess => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static void IsLessEqual(int expression, String message, boolean _throws) {
+    public static boolean IsLessEqual(int expression, String message) {
         if (expression <= 0) {
-            if (_throws) {
-                ValidLog.error("expression IsLessEqual => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static void IsLess(long expression, String message, boolean _throws) {
+    public static boolean IsLess(long expression, String message) {
         if (expression < 0) {
-            if (_throws) {
-                ValidLog.error("expression IsLess => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static void IsLessEqual(long expression, String message, boolean _throws) {
+    public static boolean IsLessEqual(long expression, String message) {
         if (expression <= 0) {
-            if (_throws) {
-                ValidLog.error("expression IsLessEqual => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static <T> void IsGreater(T expression, T greater, String message, boolean _throws) {
-        if ((Integer)expression > (Integer)greater) {
-            if (_throws) {
-                ValidLog.error("expression IsGreater greater => Ture");
-                throw new IllegalArgumentException(message);
-            } else
-                ValidLog.info(message);
+    public static <T> boolean IsGreater(T expression, T greater, String message) {
+        if ((Integer) expression > (Integer) greater) {
+            throw new IllegalArgumentException(message);
         }
+
+        return true;
     }
 
-    public static boolean isBytesEqual(byte[] _0, byte[] _1, String message) {
-        boolean request = Arrays.equals(_0, _1);
-
-        if (! request) {
-            ValidLog.error("_0 isBytesEqual _1 => False");
-        } else
-            ValidLog.info(message);
-
-        return request;
+    public static boolean isBytesEqual(byte[] _0, byte[] _1) {
+        return Arrays.equals(_0, _1);
     }
 
-    public static void Printof(String message) {
-        ValidLog.info(message);
+    public static void Print(String... message) {
+        System.out.println(message);
     }
 }
