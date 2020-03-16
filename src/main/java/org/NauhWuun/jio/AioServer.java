@@ -9,12 +9,16 @@ import java.util.concurrent.Executors;
 
 public class AioServer implements Runnable 
 {
+    public static AioServer aioServer = SingleTon.GetInstance(AioServer.class);
+
     public static CircularBuffer<Object> RingBuffer;
 
     private AsynchronousChannelGroup ChannelGroup;
     private AsynchronousServerSocketChannel Server;
 
-    public void AioServer(int port) throws IOException, ClassCastException {
+    private AioServer() {}
+
+    public void Builder(int port) throws IOException, ClassCastException {
         ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(
                 (Runtime.getRuntime().availableProcessors() <= 8 || Runtime.getRuntime().availableProcessors() == 16)
                         ?  Runtime.getRuntime().availableProcessors() * 2 + 2 /* availableProcessors * 2 + 2 => multiThreads */
