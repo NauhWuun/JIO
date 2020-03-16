@@ -36,7 +36,7 @@ public class AioServer implements Runnable
     }
 
     public void start() { 
-        RingBuffer = new CircularBuffer<Object>((int) Runtime.getRuntime().freeMemory() / 2);
+        RingBuffer = new CircularBuffer<Object>((int) Runtime.getRuntime().freeMemory() / 4);
 
         new Thread((Runnable) Server).start();
         ValidParams.Print("AIO Server Starting...");
