@@ -14,12 +14,7 @@ public class AioServer implements Runnable
     private AsynchronousChannelGroup ChannelGroup;
     private AsynchronousServerSocketChannel Server;
 
-    public AioServer() throws IOException {
-        RingBuffer = new CircularBuffer<Object>((int) Runtime.getRuntime().freeMemory() / 2);
-        ValidParams.Print("AIO Server Starting...");
-    }
-
-    public void Start(int port) throws IOException, ClassCastException {
+    public void AioServer(int port) throws IOException, ClassCastException {
         ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(
                 (Runtime.getRuntime().availableProcessors() <= 8 || Runtime.getRuntime().availableProcessors() == 16)
                         ?  Runtime.getRuntime().availableProcessors() * 2 + 2 /* availableProcessors * 2 + 2 => multiThreads */
@@ -29,12 +24,22 @@ public class AioServer implements Runnable
         Server = AsynchronousServerSocketChannel.open(ChannelGroup);
         Server.bind(new InetSocketAddress(Math.max(port, 0)));
 
-        ValidParams.Print("Binding Port：" + port);
+        ValidParams.Print("Binding Port：" + port);    
+    }
 
-        Server.setOption(StandardSocketOptions.SO_RCVBUF, 8192); /* 8k page */
+    public void setAddrReuse(boolean reuseAddr) throws IOException {
         Server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
+    }
+
+    public void setRecvBufferSize(int recvBufSize) throws IOException {
+        Server.setOption(StandardSocketOptions.SO_RCVBUF, (recvBufSize <= 0) ? 8192 : recvBufSize); /* 8k page */
+    }
+
+    public void start() { 
+        RingBuffer = new CircularBuffer<Object>((int) Runtime.getRuntime().freeMemory() / 2);
 
         new Thread((Runnable) Server).start();
+        ValidParams.Print("AIO Server Starting...");
     }
 
     public void run() {

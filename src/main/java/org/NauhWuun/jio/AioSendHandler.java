@@ -37,7 +37,6 @@ public class AioSendHandler implements CompletionHandler<Integer, ByteBuffer>
     }
 
     public void sendBuffer(ByteBuffer SendBuffer) {
-        socket.write(ByteBuffer.wrap(SendBuffer.array()), WRITE_TIME_OUT, TimeUnit.MILLISECONDS,
-                SendBuffer, this);
+        socket.write(ByteBuffer.wrap(SendBuffer.array()), WRITE_TIME_OUT, TimeUnit.MILLISECONDS, SendBuffer, this);
     }
 }

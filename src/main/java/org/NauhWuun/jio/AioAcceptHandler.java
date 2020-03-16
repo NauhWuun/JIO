@@ -7,8 +7,8 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.TimeUnit;
 
-public class AioAcceptHandler implements
-        CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> {
+public class AioAcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> 
+{
     ByteBuffer clientBuffer = ByteBuffer.allocateDirect(8192);
 
     public void cancelled(AsynchronousServerSocketChannel attachment) throws IOException {
@@ -29,7 +29,6 @@ public class AioAcceptHandler implements
     }
 
     private void StartRead(AsynchronousSocketChannel socket) {
-        socket.read(clientBuffer, 30, TimeUnit.SECONDS,
-                clientBuffer, new AioReadHandler(socket));
+        socket.read(clientBuffer, 30, TimeUnit.SECONDS, clientBuffer, new AioReadHandler(socket));
     }
 }
