@@ -19,11 +19,8 @@ public class AioServer implements Runnable
     private AioServer() {}
 
     public void Builder(int port) throws IOException, ClassCastException {
-        ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(
-                (Runtime.getRuntime().availableProcessors() <= 8 || Runtime.getRuntime().availableProcessors() == 16)
-                        ?  Runtime.getRuntime().availableProcessors() * 2 + 2 /* availableProcessors * 2 + 2 => multiThreads */
-                        :  Runtime.getRuntime().availableProcessors() * 4 + 4
-                        ,  Executors.defaultThreadFactory());
+        ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2 + 2,
+                Executors.defaultThreadFactory());
 
         Server = AsynchronousServerSocketChannel.open(ChannelGroup);
         Server.bind(new InetSocketAddress(Math.max(port, 0)));
@@ -36,7 +33,7 @@ public class AioServer implements Runnable
     }
 
     public void setRecvBufferSize(int recvBufSize) throws IOException {
-        Server.setOption(StandardSocketOptions.SO_RCVBUF, (recvBufSize <= 0) ? 8192 : recvBufSize); /* 8k page */
+        Server.setOption(StandardSocketOptions.SO_RCVBUF, (recvBufSize <= 0) ? 4096 : recvBufSize); /* 4k heap page */
     }
 
     public void start() { 
