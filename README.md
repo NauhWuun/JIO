@@ -1,2 +1,2 @@
 # JIO
-    Java AIO NetWork Communication Library
+    asynchronous I/O network communication framework
