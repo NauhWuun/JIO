@@ -1,2 +1,2 @@
 # JIO
-    Java network communication library
+    Java Aio Network Communication Library
