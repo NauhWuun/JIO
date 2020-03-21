@@ -1,2 +1,2 @@
 # JIO
-    asynchronous I/O network communication library
+    Java network communication library
