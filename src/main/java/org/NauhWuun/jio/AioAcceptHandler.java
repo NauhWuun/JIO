@@ -12,6 +12,7 @@ public class AioAcceptHandler implements CompletionHandler<AsynchronousSocketCha
     ByteBuffer clientBuffer = ByteBuffer.allocateDirect(8192);
 
     public void cancelled(AsynchronousServerSocketChannel attachment) throws IOException {
+        ValidParams.Print("Remote Disconnect...");
         attachment.close();
     }
 
@@ -26,6 +27,8 @@ public class AioAcceptHandler implements CompletionHandler<AsynchronousSocketCha
                 attachment.close();
             } catch (IOException ignored) {}
         }
+
+        ValidParams.Print("Remote Connecting Failed...");
     }
 
     private void StartRead(AsynchronousSocketChannel socket) {
