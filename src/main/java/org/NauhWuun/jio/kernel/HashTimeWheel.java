@@ -1,4 +1,4 @@
-package org.NauhWuun.jio;
+package org.NauhWuun.jio.kernel;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

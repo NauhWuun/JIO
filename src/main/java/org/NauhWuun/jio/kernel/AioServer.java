@@ -1,4 +1,4 @@
-package org.NauhWuun.jio;
+package org.NauhWuun.jio.kernel;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,13 +19,13 @@ public class AioServer implements Runnable
     private AioServer() {}
 
     public void Builder(int port) throws IOException, ClassCastException {
-        ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2 + 2,
-                Executors.defaultThreadFactory());
+        ChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(
+                Runtime.getRuntime().availableProcessors() * 2 + 2, Executors.defaultThreadFactory());
 
         Server = AsynchronousServerSocketChannel.open(ChannelGroup);
         Server.bind(new InetSocketAddress(Math.max(port, 0)));
 
-        ValidParams.Print("Binding Port：" + port);    
+        ValidParams.Print("Binding Port：" + port);
     }
 
     public void setAddrReuse(boolean reuseAddr) throws IOException {
