@@ -1,2 +1,2 @@
 # ZIO
-    Java7 LightWeight Nio2(Aio) Network Communication Library
+    Java7- LightWeight Nio.2 Network Communication Library
